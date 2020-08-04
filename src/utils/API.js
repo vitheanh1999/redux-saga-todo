@@ -1,5 +1,17 @@
 import isoFetch from 'isomorphic-fetch';
+import axios from 'axios';
 
+const fetchInitSearch = () =>{
+	 return axios.get('http://hn.algolia.com/api/v1/search?query=redux').then((result) => {
+		 return result.data
+	 })
+}
+
+const fetchAfterSearch = (param) => {
+	return axios.get(`http://hn.algolia.com/api/v1/search?query=${param}`).then((result) => {
+		return result.data
+	 })
+}
 const fetchTodos = () => {
 	return isoFetch(`https://practiceapi.devmountain.com/api/tasks`);	
 }
@@ -41,5 +53,7 @@ export default {
 	addNewTodo: addNewTodo,
 	editTodo: editTodo,
 	deleteTodo: deleteTodo,
-	completeTodo: completeTodo
+	completeTodo: completeTodo,
+	fetchInitSearch: fetchInitSearch,
+	fetchAfterSearch: fetchAfterSearch
 };

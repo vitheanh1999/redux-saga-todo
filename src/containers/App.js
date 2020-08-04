@@ -6,8 +6,9 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import TodoList from '../components/TodoList/TodoList';
 import TodoListAddNew from '../components/TodoList/TodoListAddNew.js';
-import { connect } from 'react-redux';
-import { fetchTodos } from '../store/actions/todos';
+import { useDispatch } from 'react-redux';
+import { fetchInitSearch }  from '../store/actions/search';
+import  SearchList  from '../components/TodoList/SearchList';
 
 const styles = theme => ({
 	root: {
@@ -26,25 +27,22 @@ const styles = theme => ({
 	}
 });
 
-export class App extends Component {
-	render(){ 
+function App(classes){
+	const dispatch = useDispatch();
+    dispatch(fetchInitSearch());
 		return (
-		<Grid container className={this.props.classes.root} spacing={16}>
-			<Grid item className={this.props.classes.control} xs={12}>
+		<Grid container className={classes.root} spacing={16}>
+			<Grid item className={classes.control} xs={12}>
+				<SearchList></SearchList>
 				<TodoListAddNew />
 				<TodoList />
 			</Grid>
 		</Grid>
 		);
-	}
 };
 
 App.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-const mapDispatchToProps = (dispatch) => ({
-	fetchTodos: () => dispatch(fetchTodos())
-});
-
-export default connect(null, mapDispatchToProps)(withStyles(styles)(App));
+export default (withStyles(styles)(App));

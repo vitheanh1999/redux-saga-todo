@@ -1,6 +1,7 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import todosReducer from './reducers/todos';
+import SearchReducers from './reducers/search';
 import errorsReducer from './reducers/errors';
 import { watchTodos } from './sagas/index';
 
@@ -11,7 +12,8 @@ export default () => {
 	const store = createStore(
 		combineReducers({
 			todos: todosReducer,
-			error: errorsReducer
+			error: errorsReducer,
+			search: SearchReducers,
 		})
 		, composeEnhancers(applyMiddleware(sagaMiddleware)) 
 	);
