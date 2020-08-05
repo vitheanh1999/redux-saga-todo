@@ -6,10 +6,13 @@ import { fetchInitSearch, fetchAfterSearch } from '../../store/actions/search';
 
 function SearchList() {
     const [query, setQuery] = useState('')
-    const data = useSelector(state => state.search.data);
+    const state = useSelector(state => state.search);
     const dispatch = useDispatch();
     const doFetch = (query) =>{ 
          dispatch(fetchAfterSearch(query));
+    };
+    const onEnter = (event) =>{
+        dispatch(fetchAfterSearch(event.target.value));
     }
     return (
         <Fragment>
@@ -18,21 +21,31 @@ function SearchList() {
                     type="text"
                     value={query}
                     onChange={event => setQuery(event.target.value)}
+                    onKeyUp={(event) => onEnter(event)}
                     ></input>
                 <button 
                     type="button"
                     onClick={() => doFetch(query)}
+                    
                     >Click</button>
-                <ul>
+                { state.isLoading ? ( <div>Loading...</div>) 
+                :
+                (
+                    <ul>
                     {
-                        data.map(item => (
+                        state.data.map(item => (
+                            item.title && (
                             <li key={item.objectID}>
                                 <a href={item.url}>{item.title}</a>
                             </li>
                             ))
+                        )  
                     }
                     
                 </ul>
+                )
+                }
+                
             </div>
         </Fragment>
     )
